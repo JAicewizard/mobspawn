@@ -16,7 +16,7 @@ public class mobspawn extends JavaPlugin{
         if (cmd.getName().equalsIgnoreCase("AMS")){
             if (sender instanceof Player){
                 Player player = (Player)  sender;
-                if(player.hasPermission("mod")){
+                if(player.hasPermission("ams")){
                     player.sendMessage(ChatColor.AQUA+"you have the correct permissions");
                 }else{
                     player.sendMessage(ChatColor.RED+"you do not have the correct permissions");

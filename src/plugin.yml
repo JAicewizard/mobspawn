@@ -7,5 +7,6 @@ commands:
     test:
         description: this is the command for testing
 permissions:
-    mod:
+    ams:
         default: op
+        children:
