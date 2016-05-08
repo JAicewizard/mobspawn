@@ -2,5 +2,7 @@ main: pw.JA.mobspawn.mobspawn
 version: 0.0.2
 name: mobspawn
 commands:
-    SMS:
+    AMS:
         description: a nice mod that helps with spawning mobs automaticly
+    test:
+        description: this is the command for testing
