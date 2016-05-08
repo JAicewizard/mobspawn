@@ -12,7 +12,7 @@ public class mobspawn extends JavaPlugin{
     }
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String Label, String[] args){
-        if (cmd.getName().equalsIgnoreCase("MS")){
+        if (cmd.getName().equalsIgnoreCase("AMS")){
             if (sender instanceof Player){
                 Player player = (Player)  sender;
                 String name = sender.getName();
