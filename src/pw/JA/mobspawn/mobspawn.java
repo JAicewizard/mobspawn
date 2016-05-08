@@ -18,7 +18,7 @@ public class mobspawn extends JavaPlugin{
                 String name = sender.getName();
                 player.sendMessage("hey you are "+name+"aren't you?");
             }else{
-                sender.sendMessage("NO ONLY PLAYERS GRRR");
+                sender.sendMessage("NO ONLY PLAYERS GRRRWHAHAH");
             }
         }
 
