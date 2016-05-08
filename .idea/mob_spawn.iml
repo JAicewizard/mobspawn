@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/out/mob_spawn" />
+    <output-test url="file://$MODULE_DIR$/out/test/mob_spawn" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="spigot-1.9.2" level="project" />
     <orderEntry type="inheritedJdk" />
+    <orderEntry type="library" exported="" name="spigot-1.9.2" level="project" />
   </component>
 </module>
