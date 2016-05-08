@@ -6,3 +6,6 @@ commands:
         description: a nice mod that helps with spawning mobs automaticly
     test:
         description: this is the command for testing
+permissions:
+    mod:
+        default: op

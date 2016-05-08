@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/mob_spawn.iml" filepath="$PROJECT_DIR$/.idea/mob_spawn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mobspawn.iml" filepath="$PROJECT_DIR$/mobspawn.iml" />
     </modules>
   </component>
 </project>
