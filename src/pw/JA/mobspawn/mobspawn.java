@@ -1,14 +1,18 @@
 package pw.JA.mobspawn;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.EventHandler;
+
+import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -17,6 +21,16 @@ public class mobspawn extends JavaPlugin implements Listener{
         getLogger().info("getlogger at its best");
         System.out.println("and the clasic ones");
         getServer().getPluginManager().registerEvents(this, this);
+        URL location = mobspawn.class.getProtectionDomain().getCodeSource().getLocation();
+        System.out.println(location);
+        File file = new File(location+"/mobspawn");
+        if (!file.exists()) {
+            if (file.mkdir()) {
+                System.out.println("Directory is created!");
+            } else {
+                System.out.println("Failed to create directory!");
+            }
+        }
     }
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String Label, String[] args){
@@ -25,8 +39,19 @@ public class mobspawn extends JavaPlugin implements Listener{
                 Player player = (Player)  sender;
                 if(player.hasPermission("ams")){
                     player.sendMessage(ChatColor.AQUA+"you have the correct permissions");
-                    usrPermunset(player, "ams");
-                    player.sendMessage(ChatColor.RED+"just not anymore");
+                    if(args.length == 0){
+                        player.sendMessage(ChatColor.RED+"usage:'ams [mode]'");
+                    }else{
+                        switch (args[0]){
+                            case "add":
+                                switch(args[1]){
+                                    case "op":
+                                        Bukkit.getPlayer(args[2]);
+                                        break;
+                                }
+                                break;
+                        }
+                    }
                 }else{
                     player.sendMessage(ChatColor.RED+"you do not have the correct permissions");
                 }
@@ -63,16 +88,10 @@ public class mobspawn extends JavaPlugin implements Listener{
     public void onJoin(PlayerJoinEvent event) {
         Player playerInfo = event.getPlayer();
         String name = playerInfo.getName();
-        playerInfo.sendMessage(name);
-        boolean TF = name.equals("jaap313");
-        playerInfo.sendMessage(Boolean.toString(TF)+" "+name.length());
-        playerInfo.sendMessage(name);
-        playerInfo.sendMessage("jaap313");
-        if (name.equals("jaap313")) {
-            playerInfo.sendMessage("almost  ");
-            usrPermset( playerInfo, "ams");
-            playerInfo.sendMessage("done");
-
-        }
+        //if (name.equals("jaap313")) {
+        //    playerInfo.sendMessage("almost  ");
+        //    usrPermset( playerInfo, "ams");
+        //    playerInfo.sendMessage("done");
+        //}
     }
 }
