@@ -37,4 +37,7 @@ public class mobspawn extends JavaPlugin{
 
         return false;
     }
+    public void usrPerm(){
+
+    }
 }

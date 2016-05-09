@@ -8,5 +8,5 @@ commands:
         description: this is the command for testing
 permissions:
     ams:
-        default: op
+        description: this is the power permissions for everything
         children:
