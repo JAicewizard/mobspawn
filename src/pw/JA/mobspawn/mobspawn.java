@@ -9,7 +9,6 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.EventHandler;
-
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -26,6 +25,8 @@ public class mobspawn extends JavaPlugin implements Listener{
                 Player player = (Player)  sender;
                 if(player.hasPermission("ams")){
                     player.sendMessage(ChatColor.AQUA+"you have the correct permissions");
+                    usrPermunset(player, "ams");
+                    player.sendMessage(ChatColor.RED+"just not anymore");
                 }else{
                     player.sendMessage(ChatColor.RED+"you do not have the correct permissions");
                 }
@@ -45,11 +46,12 @@ public class mobspawn extends JavaPlugin implements Listener{
 
         return false;
     }
-    public void usrPermget(Player player, String permission){
+    public void usrPermunset(Player player, String permission){
         HashMap<UUID, PermissionAttachment> perms = new HashMap<UUID, PermissionAttachment>();
         PermissionAttachment attach = player.addAttachment(this);
         perms.put(player.getUniqueId(), attach);
-        attach.getPermissions();
+        attach.setPermission(permission, false);
+        player.sendMessage(ChatColor.YELLOW+"test it again");
     }
     public void usrPermset(Player player, String permission){
         HashMap<UUID, PermissionAttachment> perms = new HashMap<UUID, PermissionAttachment>();
