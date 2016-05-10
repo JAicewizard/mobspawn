@@ -10,9 +10,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
-import java.net.URL;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -21,14 +22,28 @@ public class mobspawn extends JavaPlugin implements Listener{
         getLogger().info("getlogger at its best");
         System.out.println("and the clasic ones");
         getServer().getPluginManager().registerEvents(this, this);
-        URL location = mobspawn.class.getProtectionDomain().getCodeSource().getLocation();
-        System.out.println(location);
-        File file = new File(location+"/mobspawn");
+        File file = new File("plugins/mobspawn");
         if (!file.exists()) {
             if (file.mkdir()) {
                 System.out.println("Directory is created!");
             } else {
                 System.out.println("Failed to create directory!");
+            }
+        }
+        File permFile = new File("plugins/mobspawn/permissions.yml");
+        try{
+            if (!permFile.exists()) {
+                permFile.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (permFile.exists()) {
+            Yaml yaml = new Yaml();
+            try{
+
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
     }
