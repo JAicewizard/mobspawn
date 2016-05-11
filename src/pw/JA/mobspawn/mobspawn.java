@@ -14,7 +14,10 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class mobspawn extends JavaPlugin implements Listener{
@@ -30,23 +33,45 @@ public class mobspawn extends JavaPlugin implements Listener{
                 System.out.println("Failed to create directory!");
             }
         }
-        File permFile = new File("plugins/mobspawn/permissions.yml");
-        try{
-            if (!permFile.exists()) {
+
+        String permUrl = "plugins/mobspawn/perm.yml";
+        File permFile = new File(permUrl);
+        if (!permFile.exists()) {
+            try {
                 permFile.createNewFile();
+            }catch (IOException e){
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         if (permFile.exists()) {
-            Yaml yaml = new Yaml();
-            try{
-
-            }catch (Exception e){
+            try {
+                String ducument = new String(Files.readAllBytes(Paths.get(permUrl)));
+                Boolean groups =searchYml(ducument, "hello", "hallo");
+                getLogger().info(groups.toString());
+            }catch (java.io.IOException e){
                 e.printStackTrace();
             }
         }
     }
+
+    public boolean searchYml(String yml, String group, String player){
+        Yaml yaml = new Yaml();
+        getLogger().info(yml);
+        Map map = (Map) yaml.load(yml);
+        getLogger().info(map.toString());
+        Map nmap = (Map) map.get(group);
+        for(String groups:  knsasx)
+        getLogger().info(nmap.toString());
+        getLogger().info(nmap.get(player).toString());
+        String TF = nmap.get(player).toString();
+        if(TF != null && !TF.isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
+        return
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String Label, String[] args){
         if (cmd.getName().equalsIgnoreCase("AMS")){
@@ -102,11 +127,6 @@ public class mobspawn extends JavaPlugin implements Listener{
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player playerInfo = event.getPlayer();
-        String name = playerInfo.getName();
-        //if (name.equals("jaap313")) {
-        //    playerInfo.sendMessage("almost  ");
-        //    usrPermset( playerInfo, "ams");
-        //    playerInfo.sendMessage("done");
-        //}
+        playerInfo.sendMessage(ChatColor.AQUA+"hello"+playerInfo.getDisplayName());
     }
 }

@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="mob_spawn:jar2">
+    <output-path>$USER_HOME$/spigot server/1.9/plugins</output-path>
+    <root id="archive" name="mob_spawn.jar">
+      <element id="module-output" name="mob_spawn" />
+      <element id="library" level="project" name="spigot-1.9.21" />
+      <element id="extracted-dir" path="$USER_HOME$/spigot server/1.9/spigot-1.9.2.jar" path-in-jar="/" />
+      <element id="module-output" name="mobspawn" />
+    </root>
+  </artifact>
+</component>
