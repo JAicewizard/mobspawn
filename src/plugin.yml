@@ -1,5 +1,5 @@
 main: pw.JA.mobspawn.mobspawn
-version: 0.0.24
+version: 0.0.27
 name: mobspawn
 commands:
     AMS:

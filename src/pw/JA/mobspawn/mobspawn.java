@@ -43,33 +43,15 @@ public class mobspawn extends JavaPlugin implements Listener{
                 e.printStackTrace();
             }
         }
-        if (permFile.exists()) {
-            try {
-                String ducument = new String(Files.readAllBytes(Paths.get(permUrl)));
-                Boolean groups =searchYml(ducument, "hello", "hallo");
-                getLogger().info(groups.toString());
-            }catch (java.io.IOException e){
-                e.printStackTrace();
-            }
-        }
     }
 
-    public boolean searchYml(String yml, String group, String player){
+    public String searchPlayerGroup(String yml, String Player){
         Yaml yaml = new Yaml();
         getLogger().info(yml);
         Map map = (Map) yaml.load(yml);
-        getLogger().info(map.toString());
-        Map nmap = (Map) map.get(group);
-        for(String groups:  knsasx)
-        getLogger().info(nmap.toString());
-        getLogger().info(nmap.get(player).toString());
-        String TF = nmap.get(player).toString();
-        if(TF != null && !TF.isEmpty()){
-            return true;
-        }else{
-            return false;
-        }
-        return
+        Map nmap = (Map) map.get(Player);
+        String group = (String) nmap.get("group");
+        return group;
     }
 
     @Override
@@ -125,8 +107,20 @@ public class mobspawn extends JavaPlugin implements Listener{
         attach.setPermission(permission, true);
     }
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void OnJoin(PlayerJoinEvent event) {
+        String permUrl = "plugins/mobspawn/perm.yml";
+        File permFile = new File(permUrl);
+
         Player playerInfo = event.getPlayer();
         playerInfo.sendMessage(ChatColor.AQUA+"hello"+playerInfo.getDisplayName());
+        if (permFile.exists()) {
+            try {
+                String ducument = new String(Files.readAllBytes(Paths.get(permUrl)));
+                String groups =searchPlayerGroup(ducument, playerInfo.getDisplayName());
+                playerInfo.sendMessage(groups);
+            }catch (java.io.IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }
