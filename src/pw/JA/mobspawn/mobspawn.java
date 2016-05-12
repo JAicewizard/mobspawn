@@ -16,9 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class mobspawn extends JavaPlugin implements Listener{
     public void onEnable(){
@@ -45,13 +43,15 @@ public class mobspawn extends JavaPlugin implements Listener{
         }
     }
 
-    public String searchPlayerGroup(String yml, String Player){
+    public List<String> searchPlayerGroup(String yml, String Player){
         Yaml yaml = new Yaml();
         getLogger().info(yml);
         Map map = (Map) yaml.load(yml);
         Map nmap = (Map) map.get(Player);
-        String group = (String) nmap.get("group");
-        return group;
+        getLogger().info("lie!");
+        Map namap = (Map) nmap.get("groups");
+        List<String> list = new ArrayList(namap.keySet());
+        return list;
     }
 
     @Override
@@ -108,6 +108,7 @@ public class mobspawn extends JavaPlugin implements Listener{
     }
     @EventHandler
     public void OnJoin(PlayerJoinEvent event) {
+        getLogger().info("playerloged in");
         String permUrl = "plugins/mobspawn/perm.yml";
         File permFile = new File(permUrl);
 
@@ -116,11 +117,15 @@ public class mobspawn extends JavaPlugin implements Listener{
         if (permFile.exists()) {
             try {
                 String ducument = new String(Files.readAllBytes(Paths.get(permUrl)));
-                String groups =searchPlayerGroup(ducument, playerInfo.getDisplayName());
-                playerInfo.sendMessage(groups);
+                List groups =searchPlayerGroup(ducument, playerInfo.getDisplayName());
+                for(int i = 0; i < groups.size(); i++) {
+                    playerInfo.sendMessage(String.valueOf(groups.get(i)));
+                }
+
             }catch (java.io.IOException e){
                 e.printStackTrace();
             }
         }
+        getLogger().info("done with the login script");
     }
 }
