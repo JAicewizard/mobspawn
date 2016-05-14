@@ -2,6 +2,7 @@ package pw.JA.mobspawn;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -56,26 +57,43 @@ public class mobspawn extends JavaPlugin implements Listener{
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String Label, String[] args){
+        java.util.List<String> list = new ArrayList<String>(Arrays.asList(args));
         if (cmd.getName().equalsIgnoreCase("AMS")){
             if (sender instanceof Player){
                 Player player = (Player)  sender;
-                if(player.hasPermission("ams")){
-                    player.sendMessage(ChatColor.AQUA+"you have the correct permissions");
-                    if(args.length == 0){
-                        player.sendMessage(ChatColor.RED+"usage:'ams [mode]'");
-                    }else{
-                        switch (args[0]){
-                            case "add":
-                                switch(args[1]){
-                                    case "op":
-                                        Bukkit.getPlayer(args[2]);
-                                        break;
+                if(args.length == 0){
+                    player.sendMessage(ChatColor.RED+"usage:'ams [mode]'");
+                }else {
+                    switch (args[0]) {
+                        case "add":
+                            list.remove(0);
+                            if (player.hasPermission("ams")) {
+
+                                for(int i = 0; i< 3; i++) {
+                                    if(list.toArray().length <= i) {
+                                        player.sendMessage(ChatColor.RED+"please enter your "+(i+1)+"th value of the location");
+                                        return false;
+                                    }
                                 }
-                                break;
-                        }
+                                double x = Double.parseDouble(args[1]);
+                                double y = Double.parseDouble(args[2]);
+                                double z = Double.parseDouble(args[3]);
+                                Location location = new Location(Bukkit.getWorld("world"),x,y,z);
+                                if(location == null){
+                                    player.sendMessage(ChatColor.RED+"location is not recognized");
+                                }else{
+                                    player.teleport(location);
+                                }
+
+
+
+
+                            } else {
+                                player.sendMessage(ChatColor.RED + "you do not have the correct permissions");
+                            }
+
+                            break;
                     }
-                }else{
-                    player.sendMessage(ChatColor.RED+"you do not have the correct permissions");
                 }
             }else{
                 sender.sendMessage("NO ONLY PLAYERS GRRRWHAHAH");
@@ -120,12 +138,12 @@ public class mobspawn extends JavaPlugin implements Listener{
                 List groups =searchPlayerGroup(ducument, playerInfo.getDisplayName());
                 for(int i = 0; i < groups.size(); i++) {
                     playerInfo.sendMessage(String.valueOf(groups.get(i)));
+                    usrPermset(playerInfo, String.valueOf(groups.get(i)));
                 }
 
             }catch (java.io.IOException e){
                 e.printStackTrace();
             }
         }
-        getLogger().info("done with the login script");
     }
 }
