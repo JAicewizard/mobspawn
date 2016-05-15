@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -72,6 +73,7 @@ public class mobspawn extends JavaPlugin implements Listener{
                                 if(location == null){
                                     player.sendMessage(ChatColor.RED+"location is not recognized");
                                 }else{
+                                    Bukkit.getWorld("world").spawnEntity(location, EntityType.WOLF);
                                     player.teleport(location);
                                 }
 
@@ -153,7 +155,7 @@ public class mobspawn extends JavaPlugin implements Listener{
         if (permFile.exists()) {
             try {
                 String ducument = new String(Files.readAllBytes(Paths.get(permUrl)));
-                List groups =searchPlayerGroup(ducument,playerInfo.getDisplayName());
+                List groups =searchPlayerGroup(ducument,playerInfo.getUniqueId().toString());
                 if(groups.isEmpty()){
                     storeYaml(ducument,permUrl,playerInfo.getUniqueId().toString());
                 }else {
