@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -42,17 +43,6 @@ public class mobspawn extends JavaPlugin implements Listener{
                 e.printStackTrace();
             }
         }
-    }
-
-    public List<String> searchPlayerGroup(String yml, String Player){
-        Yaml yaml = new Yaml();
-        getLogger().info(yml);
-        Map map = (Map) yaml.load(yml);
-        Map nmap = (Map) map.get(Player);
-        getLogger().info("lie!");
-        Map namap = (Map) nmap.get("groups");
-        List<String> list = new ArrayList(namap.keySet());
-        return list;
     }
 
     @Override
@@ -124,6 +114,34 @@ public class mobspawn extends JavaPlugin implements Listener{
         perms.put(player.getUniqueId(), attach);
         attach.setPermission(permission, true);
     }
+    public void storeYaml(String yml, String LOC,String uuid) {
+        Yaml yaml = new Yaml();
+        Map map = (Map) yaml.load(yml);
+        Map group = new HashMap<>();
+        group.put("default", null);
+        Map PD = new HashMap<>();
+        PD.put("groups", group);
+        map.put(uuid,PD);
+        try{
+            FileWriter writer = new FileWriter(LOC);
+            yaml.dump(map, writer);
+        }catch (java.io.IOException e){
+            e.printStackTrace();
+        }
+    }
+    public List searchPlayerGroup(String yml, String Player) {
+        Yaml yaml = new Yaml();
+        Map map = (Map) yaml.load(yml);
+        getLogger().info(yml);
+        Map nmap = (Map) map.get(Player);
+        getLogger().info(String.valueOf(nmap == null));
+        if (nmap ==  null) {
+            return new ArrayList();
+        }
+        Map namap = (Map) nmap.get("groups");
+        List<String> list = new ArrayList(namap.keySet());
+        return list;
+    }
     @EventHandler
     public void OnJoin(PlayerJoinEvent event) {
         getLogger().info("playerloged in");
@@ -135,12 +153,16 @@ public class mobspawn extends JavaPlugin implements Listener{
         if (permFile.exists()) {
             try {
                 String ducument = new String(Files.readAllBytes(Paths.get(permUrl)));
-                List groups =searchPlayerGroup(ducument, playerInfo.getDisplayName());
-                for(int i = 0; i < groups.size(); i++) {
-                    playerInfo.sendMessage(String.valueOf(groups.get(i)));
-                    usrPermset(playerInfo, String.valueOf(groups.get(i)));
-                }
+                List groups =searchPlayerGroup(ducument,playerInfo.getDisplayName());
+                if(groups.isEmpty()){
+                    storeYaml(ducument,permUrl,playerInfo.getUniqueId().toString());
+                }else {
 
+                    for (int i = 0; i < groups.size(); i++) {
+                        playerInfo.sendMessage(String.valueOf(groups.get(i)));
+                        usrPermset(playerInfo, String.valueOf(groups.get(i)));
+                    }
+                }
             }catch (java.io.IOException e){
                 e.printStackTrace();
             }
