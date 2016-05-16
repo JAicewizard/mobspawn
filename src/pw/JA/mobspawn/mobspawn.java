@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Cow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +22,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+;
+
 public class mobspawn extends JavaPlugin implements Listener{
+    Thread t = new Thread(new mopspawning());
     public void onEnable(){
         getLogger().info("getlogger at its best");
         System.out.println("and the clasic ones");
@@ -44,6 +48,10 @@ public class mobspawn extends JavaPlugin implements Listener{
                 e.printStackTrace();
             }
         }
+
+    }
+    public void onDisable(){
+        t.interrupt();
     }
 
     @Override
@@ -70,6 +78,13 @@ public class mobspawn extends JavaPlugin implements Listener{
                                 double y = Double.parseDouble(args[2]);
                                 double z = Double.parseDouble(args[3]);
                                 Location location = new Location(Bukkit.getWorld("world"),x,y,z);
+                                Cow cow = (Cow) Bukkit.getWorld("world").spawn(location, Cow.class);
+                                cow.setCustomName("hoi");
+                                cow.setCustomNameVisible(true);
+                                player.sendMessage(String.valueOf(cow));
+                                if(!t.isAlive()) {
+                                    t.run();
+                                }
                                 if(location == null){
                                     player.sendMessage(ChatColor.RED+"location is not recognized");
                                 }else{
@@ -103,6 +118,9 @@ public class mobspawn extends JavaPlugin implements Listener{
 
         return false;
     }
+
+
+
     public void usrPermunset(Player player, String permission){
         HashMap<UUID, PermissionAttachment> perms = new HashMap<UUID, PermissionAttachment>();
         PermissionAttachment attach = player.addAttachment(this);
@@ -169,5 +187,11 @@ public class mobspawn extends JavaPlugin implements Listener{
                 e.printStackTrace();
             }
         }
+    }
+}
+class mopspawning extends TimerTask{
+    @Override
+    public void run() {
+        System.out.println("Hello World!");
     }
 }
