@@ -81,7 +81,7 @@ public class mobspawn extends JavaPlugin implements Listener{
                                 Cow cow = (Cow) Bukkit.getWorld("world").spawn(location, Cow.class);
                                 cow.setCustomName("hoi");
                                 cow.setCustomNameVisible(true);
-                                player.sendMessage(String.valueOf(cow));
+                                player.sendMessage(String.valueOf(cow.getCustomName()));
                                 if(!t.isAlive()) {
                                     t.run();
                                 }
@@ -156,7 +156,8 @@ public class mobspawn extends JavaPlugin implements Listener{
         Map nmap = (Map) map.get(Player);
         getLogger().info(String.valueOf(nmap == null));
         if (nmap ==  null) {
-            return new ArrayList();
+            return new ArrayList<>();
+
         }
         Map namap = (Map) nmap.get("groups");
         List<String> list = new ArrayList(namap.keySet());
@@ -174,7 +175,7 @@ public class mobspawn extends JavaPlugin implements Listener{
             try {
                 String ducument = new String(Files.readAllBytes(Paths.get(permUrl)));
                 List groups =searchPlayerGroup(ducument,playerInfo.getUniqueId().toString());
-                if(groups.isEmpty()){
+                if(groups.equals(new ArrayList<>())){
                     storeYaml(ducument,permUrl,playerInfo.getUniqueId().toString());
                 }else {
 
