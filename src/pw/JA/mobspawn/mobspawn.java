@@ -22,10 +22,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-;
 
 public class mobspawn extends JavaPlugin implements Listener{
-    Thread t = new Thread(new mopspawning());
+    Thread t = new Thread(new mobspawning().init);
     public void onEnable(){
         getLogger().info("getlogger at its best");
         System.out.println("and the clasic ones");
@@ -190,9 +189,4 @@ public class mobspawn extends JavaPlugin implements Listener{
         }
     }
 }
-class mopspawning extends TimerTask{
-    @Override
-    public void run() {
-        System.out.println("Hello World!");
-    }
-}
+
