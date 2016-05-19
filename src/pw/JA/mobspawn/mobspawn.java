@@ -24,33 +24,48 @@ import java.util.*;
 
 
 public class mobspawn extends JavaPlugin implements Listener{
-    Thread t = new Thread(new mobspawning().init);
+    Thread t = new Thread();
     public void onEnable(){
         getLogger().info("getlogger at its best");
         System.out.println("and the clasic ones");
         getServer().getPluginManager().registerEvents(this, this);
-        File file = new File("plugins/mobspawn");
-        if (!file.exists()) {
-            if (file.mkdir()) {
-                System.out.println("Directory is created!");
-            } else {
-                System.out.println("Failed to create directory!");
-            }
-        }
 
-        String permUrl = "plugins/mobspawn/perm.yml";
-        File permFile = new File(permUrl);
-        if (!permFile.exists()) {
-            try {
-                permFile.createNewFile();
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
+        createDirecroty("plugins/mobspawn");
+        createFile("plugins/mobspawn/perm.yml");
+        createFile("plugins/mobspawn/mobs.yml");
+
 
     }
     public void onDisable(){
         t.interrupt();
+    }
+
+
+    @EventHandler
+    public void OnJoin(PlayerJoinEvent event) {
+        getLogger().info("playerloged in");
+        String permUrl = "plugins/mobspawn/perm.yml";
+        File permFile = new File(permUrl);
+
+        Player playerInfo = event.getPlayer();
+        playerInfo.sendMessage(ChatColor.AQUA+"hello"+playerInfo.getDisplayName());
+        if (permFile.exists()) {
+            try {
+                String ducument = new String(Files.readAllBytes(Paths.get(permUrl)));
+                List groups =searchPlayerGroup(ducument,playerInfo.getUniqueId().toString());
+                if(groups.equals(new ArrayList<>())){
+                    storeYaml(ducument,permUrl,playerInfo.getUniqueId().toString());
+                }else {
+
+                    for (int i = 0; i < groups.size(); i++) {
+                        playerInfo.sendMessage(String.valueOf(groups.get(i)));
+                        usrPermset(playerInfo, String.valueOf(groups.get(i)));
+                    }
+                }
+            }catch (java.io.IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -82,6 +97,7 @@ public class mobspawn extends JavaPlugin implements Listener{
                                 cow.setCustomNameVisible(true);
                                 player.sendMessage(String.valueOf(cow.getCustomName()));
                                 if(!t.isAlive()) {
+                                    Thread t = new Thread(new mobspawning(location));
                                     t.run();
                                 }
                                 if(location == null){
@@ -118,6 +134,28 @@ public class mobspawn extends JavaPlugin implements Listener{
         return false;
     }
 
+    public boolean createDirecroty(String permUrl){
+        File file = new File(permUrl);
+        if (!file.exists()) {
+            if (file.mkdir()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean createFile(String permUrl){
+        File permFile = new File(permUrl);
+        if (!permFile.exists()) {
+            try {
+                permFile.createNewFile();
+                return true;
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
 
 
     public void usrPermunset(Player player, String permission){
@@ -162,31 +200,6 @@ public class mobspawn extends JavaPlugin implements Listener{
         List<String> list = new ArrayList(namap.keySet());
         return list;
     }
-    @EventHandler
-    public void OnJoin(PlayerJoinEvent event) {
-        getLogger().info("playerloged in");
-        String permUrl = "plugins/mobspawn/perm.yml";
-        File permFile = new File(permUrl);
 
-        Player playerInfo = event.getPlayer();
-        playerInfo.sendMessage(ChatColor.AQUA+"hello"+playerInfo.getDisplayName());
-        if (permFile.exists()) {
-            try {
-                String ducument = new String(Files.readAllBytes(Paths.get(permUrl)));
-                List groups =searchPlayerGroup(ducument,playerInfo.getUniqueId().toString());
-                if(groups.equals(new ArrayList<>())){
-                    storeYaml(ducument,permUrl,playerInfo.getUniqueId().toString());
-                }else {
-
-                    for (int i = 0; i < groups.size(); i++) {
-                        playerInfo.sendMessage(String.valueOf(groups.get(i)));
-                        usrPermset(playerInfo, String.valueOf(groups.get(i)));
-                    }
-                }
-            }catch (java.io.IOException e){
-                e.printStackTrace();
-            }
-        }
-    }
 }
 
